@@ -2,6 +2,7 @@ import uuid
 import math
 from datetime import date, time
 from flask import Flask, request
+from validators import ValidationError, validate_receipt
 
 app = Flask(__name__)
 
@@ -15,6 +16,11 @@ def process_receipt():
     Given a valid receipt in the request body, create a new uuid for that receipt and save it in the
     receipts dict.
     """
+    try:
+        validate_receipt(request.json)
+    except ValidationError as e:
+        return {"error": e.message}, 400
+
     id = str(uuid.uuid4())
     receipts[id] = request.json
     return {"id": id}, 201

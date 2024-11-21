@@ -44,7 +44,7 @@ def test_process_receipt():
     with app.test_client() as client:
         response = client.post("/receipts/process", json=target)
 
-        assert response.status_code == 201
+        assert response.status_code == 201, response.json
         assert "id" in response.json
         id = response.json["id"]
         assert id in receipts
@@ -60,11 +60,13 @@ def test_points():
     """
     with app.test_client() as client:
         response = client.post("/receipts/process", json=target)
+        assert response.status_code == 201, response.json
         id = response.json["id"]
         response = client.get(f"/receipts/{id}/points")
         assert response.json == {"points": 28}
 
         response = client.post("/receipts/process", json=corner_market)
+        assert response.status_code == 201, response.json
         id = response.json["id"]
         response = client.get(f"/receipts/{id}/points")
         assert response.json == {"points": 109}

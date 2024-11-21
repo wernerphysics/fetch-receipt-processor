@@ -11,4 +11,5 @@ Run local server on port 5000: `./run_server.sh`
 
 ## Endpoints
 `localhost:5000/receipts/process` (POST)
+
 `localhost:5000/receipts/{id}/points` (GET)
